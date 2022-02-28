@@ -1,0 +1,41 @@
+import './App.css';
+import ProductItem from './components/ProductItem';
+import {useEffect, useState} from 'react';
+import axios from 'axios';
+import Header from './components/Header';
+
+function App() {
+
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    const getData = async () => {
+    const results = await axios.get('Products.json');
+    setProducts(results.data.products);
+  }
+    getData();
+  }
+  ,[]);
+
+  function filterProducts(searchInput){
+    //console.log(searchInput);
+    // const filteredData = results.filter(item => {
+    //   return Object.keys(item).some(key =>
+    //     item[key].toLowerCase().includes(searchInput.toLowerCase())
+    //   );
+    // });
+    // setProducts(filteredData);
+  } 
+
+  
+  
+  return (
+  <div className='App'>
+  <Header onSearchChange = {filterProducts}/>
+  <div className='productContainer'>
+    {products.map(p => <ProductItem name={p.title} image={p.thumbnail} price={p.price} description={p.description} />)}
+  </div>
+  </div>
+  );
+}
+
+export default App;
